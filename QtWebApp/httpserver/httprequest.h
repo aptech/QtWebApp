@@ -118,6 +118,9 @@ public:
     /** Get all HTTP request parameters. */
     QMultiMap<QByteArray,QByteArray> getParameterMap() const;
 
+    /** Check if parameter exists. */
+    bool hasParameter(const QByteArray& name) const;
+
     /** Get the HTTP request body.  */
     QByteArray getBody() const;
 

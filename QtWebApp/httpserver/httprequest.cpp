@@ -373,6 +373,11 @@ QList<QByteArray> HttpRequest::getParameters(const QByteArray& name) const
 	return parameters.values(name);
 }
 
+bool HttpRequest::hasParameter(const QByteArray& name) const
+{
+    return parameters.contains(name);
+}
+
 QMultiMap<QByteArray,QByteArray> HttpRequest::getParameterMap() const
 {
 	return parameters;

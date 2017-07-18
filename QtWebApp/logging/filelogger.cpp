@@ -29,7 +29,7 @@ void FileLogger::refreshSettings()
 #ifdef Q_OS_WIN32
 	if (QDir::isRelativePath(fileName) && settings->format()!=QSettings::NativeFormat)
 #else
-	if (QDir::isRelativePath(fileName))
+    if (!fileName.isEmpty() && QDir::isRelativePath(fileName))
 #endif
 	{
 		QFileInfo configFile(settings->fileName());
