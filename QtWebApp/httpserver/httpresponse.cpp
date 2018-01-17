@@ -17,13 +17,13 @@ HttpResponse::HttpResponse(QTcpSocket* socket)
 	chunkedMode=false;
 }
 
-void HttpResponse::setHeader(QByteArray name, QByteArray value)
+void HttpResponse::setHeader(const QByteArray &name, const QByteArray &value)
 {
 	Q_ASSERT(sentHeaders==false);
 	headers.insert(name,value);
 }
 
-void HttpResponse::setHeader(QByteArray name, int value)
+void HttpResponse::setHeader(const QByteArray &name, int value)
 {
 	Q_ASSERT(sentHeaders==false);
 	headers.insert(name,QByteArray::number(value));
@@ -34,7 +34,7 @@ QMap<QByteArray,QByteArray>& HttpResponse::getHeaders()
 	return headers;
 }
 
-void HttpResponse::setStatus(int statusCode, QByteArray description)
+void HttpResponse::setStatus(int statusCode, const QByteArray &description)
 {
 	this->statusCode=statusCode;
 	statusText=description;
@@ -72,10 +72,10 @@ void HttpResponse::writeHeaders()
 	sentHeaders=true;
 }
 
-bool HttpResponse::writeToSocket(QByteArray data)
+bool HttpResponse::writeToSocket(const QByteArray &data)
 {
 	int remaining=data.size();
-	char* ptr=data.data();
+    const char* ptr=data.constData();
 	while (socket->isOpen() && remaining>0)
 	{
 		// If the output buffer has become large, then wait until it has been sent.
@@ -95,7 +95,7 @@ bool HttpResponse::writeToSocket(QByteArray data)
 	return true;
 }
 
-void HttpResponse::write(QByteArray data, bool lastPart)
+void HttpResponse::write(const QByteArray &data, bool lastPart)
 {
 	Q_ASSERT(sentLastPart==false);
 	
@@ -132,7 +132,7 @@ void HttpResponse::write(QByteArray data, bool lastPart)
 		{
 			if (data.size()>0)
 			{
-				QByteArray size=QByteArray::number(data.size(),16);
+                const QByteArray &size = QByteArray::number(data.size(),16);
 				writeToSocket(size);
 				writeToSocket("\r\n");
 				writeToSocket(data);

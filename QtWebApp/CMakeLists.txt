@@ -30,7 +30,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions("-D_GLIBCXX_DEBUG")
 	add_definitions("-DQT_SHAREDPOINTER_TRACK_POINTERS")
 	add_definitions("-DCMAKE_DEBUG")
-	add_definitions("-DSUPERVERBOSE")
+    #add_definitions("-DSUPERVERBOSE")
 endif()
 add_definitions("-DCMAKE_QTWEBAPP_SO")
 

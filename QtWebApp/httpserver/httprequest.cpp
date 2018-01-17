@@ -37,7 +37,7 @@ void HttpRequest::readRequest(QTcpSocket* socket)
 #endif
 		return;
 	}
-	QByteArray newData=lineBuffer.trimmed();
+    const QByteArray &newData=lineBuffer.trimmed();
 	lineBuffer.clear();
 	if (!newData.isEmpty())
 	{
@@ -72,14 +72,14 @@ void HttpRequest::readHeader(QTcpSocket* socket)
 #endif
 		return;
 	}
-	QByteArray newData=lineBuffer.trimmed();
+    const QByteArray &newData=lineBuffer.trimmed();
 	lineBuffer.clear();
 	int colon=newData.indexOf(':');
 	if (colon>0)
 	{
 		// Received a line with a colon - a header
 		currentHeader=newData.left(colon).toLower();
-		QByteArray value=newData.mid(colon+1).trimmed();
+        const QByteArray &value=newData.mid(colon+1).trimmed();
 		headers.insert(currentHeader,value);
 #ifdef SUPERVERBOSE
 		qDebug("HttpRequest: received header %s: %s",currentHeader.data(),value.data());
@@ -104,7 +104,7 @@ void HttpRequest::readHeader(QTcpSocket* socket)
 #endif
 		// Empty line received, that means all headers have been received
 		// Check for multipart/form-data
-		QByteArray contentType=headers.value("content-type");
+        const QByteArray &contentType=headers.value("content-type");
 		if (contentType.startsWith("multipart/form-data"))
 		{
 			int posi=contentType.indexOf("boundary=");
@@ -116,7 +116,7 @@ void HttpRequest::readHeader(QTcpSocket* socket)
 				}
 			}
 		}
-		QByteArray contentLength=headers.value("content-length");
+        const QByteArray &contentLength=headers.value("content-length");
 		if (!contentLength.isEmpty())
 		{
 			expectedBodySize=contentLength.toInt();
@@ -224,7 +224,7 @@ void HttpRequest::decodeRequestParams()
 		path=path.left(questionMark);
 	}
 	// Get request body parameters
-	QByteArray contentType=headers.value("content-type");
+    const QByteArray &contentType=headers.value("content-type");
 	if (!bodyData.isEmpty() && (contentType.isEmpty() || contentType.startsWith("application/x-www-form-urlencoded")))
 	{
 		if (!rawParameters.isEmpty())
@@ -238,8 +238,8 @@ void HttpRequest::decodeRequestParams()
 		}
 	}
 	// Split the parameters into pairs of value and name
-	QList<QByteArray> list=rawParameters.split('&');
-	foreach (QByteArray part, list)
+    const QList<QByteArray> &list=rawParameters.split('&');
+    foreach (const QByteArray &part, list)
 	{
 		int equalsChar=part.indexOf('=');
 		if (equalsChar>=0)
@@ -261,10 +261,10 @@ void HttpRequest::extractCookies()
 #ifdef SUPERVERBOSE
 	qDebug("HttpRequest: extract cookies");
 #endif
-	foreach(QByteArray cookieStr, headers.values("cookie"))
+    foreach(const QByteArray &cookieStr, headers.values("cookie"))
 	{
-		QList<QByteArray> list=HttpCookie::splitCSV(cookieStr);
-		foreach(QByteArray part, list)
+        const QList<QByteArray> &list=HttpCookie::splitCSV(cookieStr);
+        foreach(const QByteArray &part, list)
 		{
 #ifdef SUPERVERBOSE
 			qDebug("HttpRequest: found cookie %s",part.data());
@@ -388,7 +388,7 @@ QByteArray HttpRequest::getBody() const
 	return bodyData;
 }
 
-QByteArray HttpRequest::urlDecode(const QByteArray source)
+QByteArray HttpRequest::urlDecode(const QByteArray &source)
 {
 	QByteArray buffer(source);
 	buffer.replace('+',' ');
@@ -555,7 +555,7 @@ HttpRequest::~HttpRequest()
 	}
 }
 
-QTemporaryFile* HttpRequest::getUploadedFile(const QByteArray fieldName) const
+QTemporaryFile* HttpRequest::getUploadedFile(const QByteArray &fieldName) const
 {
 	return uploadedFiles.value(fieldName);
 }

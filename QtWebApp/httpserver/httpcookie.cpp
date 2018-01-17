@@ -14,7 +14,7 @@ HttpCookie::HttpCookie()
 	secure=false;
 }
 
-HttpCookie::HttpCookie(const QByteArray name, const QByteArray value, const int maxAge, const QByteArray path, const QByteArray comment, const QByteArray domain, const bool secure, const bool httpOnly)
+HttpCookie::HttpCookie(const QByteArray &name, const QByteArray &value, const int maxAge, const QByteArray &path, const QByteArray &comment, const QByteArray &domain, const bool secure, const bool httpOnly)
 {
 	this->name=name;
 	this->value=value;
@@ -27,13 +27,13 @@ HttpCookie::HttpCookie(const QByteArray name, const QByteArray value, const int 
 	this->version=1;
 }
 
-HttpCookie::HttpCookie(const QByteArray source)
+HttpCookie::HttpCookie(const QByteArray &source)
 {
 	version=1;
 	maxAge=0;
 	secure=false;
-	QList<QByteArray> list=splitCSV(source);
-	foreach(QByteArray part, list)
+    const QList<QByteArray> &list=splitCSV(source);
+    foreach(const QByteArray &part, list)
 	{
 		
 		// Split the part into name and value
@@ -130,22 +130,22 @@ QByteArray HttpCookie::toByteArray() const
 	return buffer;
 }
 
-void HttpCookie::setName(const QByteArray name)
+void HttpCookie::setName(const QByteArray &name)
 {
 	this->name=name;
 }
 
-void HttpCookie::setValue(const QByteArray value)
+void HttpCookie::setValue(const QByteArray &value)
 {
 	this->value=value;
 }
 
-void HttpCookie::setComment(const QByteArray comment)
+void HttpCookie::setComment(const QByteArray &comment)
 {
 	this->comment=comment;
 }
 
-void HttpCookie::setDomain(const QByteArray domain)
+void HttpCookie::setDomain(const QByteArray &domain)
 {
 	this->domain=domain;
 }
@@ -155,7 +155,7 @@ void HttpCookie::setMaxAge(const int maxAge)
 	this->maxAge=maxAge;
 }
 
-void HttpCookie::setPath(const QByteArray path)
+void HttpCookie::setPath(const QByteArray &path)
 {
 	this->path=path;
 }
