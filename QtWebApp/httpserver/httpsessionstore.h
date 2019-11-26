@@ -95,7 +95,7 @@ private:
     QByteArray cookieName;
 
     /** Time when sessions expire (in ms)*/
-    int expirationTime;
+    quint64 expirationTime;
 
 	/** Used to synchronize threads */
 	QMutex mutex;

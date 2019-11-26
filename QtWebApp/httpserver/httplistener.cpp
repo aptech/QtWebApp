@@ -39,15 +39,13 @@ void HttpListener::listen()
     {
         pool=new HttpConnectionHandlerPool(cfg, requestHandler);
     }
-    const QString &host = cfg.host;
-    quint16 port = static_cast<quint16>(cfg.port) & 0xFFFF;
-    QTcpServer::listen(host.isEmpty() ? QHostAddress::Any : QHostAddress(host), port);
+    QTcpServer::listen(cfg.host, cfg.port);
     if (!isListening())
     {
-        qCritical("HttpListener: Cannot bind on port %i: %s",port,qPrintable(errorString()));
+        qCritical("HttpListener: Cannot bind on port %i: %s",cfg.port,qPrintable(errorString()));
     }
     else {
-        qDebug("HttpListener: Listening on port %i", port);
+        qDebug("HttpListener: Listening on port %i", cfg.port);
     }
 }
 

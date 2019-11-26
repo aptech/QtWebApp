@@ -25,7 +25,7 @@ void HttpServerConfig::parseSettings(const QSettings &settings)
 	
 	QString hoststr = settings.value("host").toString();
 	host = hoststr.isEmpty() ? QHostAddress::Any : QHostAddress(hoststr);
-	port = settings.value("port", port).toUInt();
+    port = settings.value("port", port).toUInt() & 0xFFFF;
 	
 	maxRequestSize = parseNum(settings.value("maxRequestSize", maxRequestSize), 1024);
 	maxMultipartSize = parseNum(settings.value("maxMultipartSize", maxMultipartSize), 1024);
