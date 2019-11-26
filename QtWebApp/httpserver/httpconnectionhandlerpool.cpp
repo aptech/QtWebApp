@@ -12,12 +12,12 @@
 
 using namespace qtwebapp;
 
-HttpConnectionHandlerPool::HttpConnectionHandlerPool(const HttpServerConfig &cfg, HttpRequestHandler* requestHandler)
+HttpConnectionHandlerPool::HttpConnectionHandlerPool(const HttpServerConfig &cfg, HttpRequestHandler *requestHandler)
 	: QObject()
 	, cfg(cfg)
 	, requestHandler(requestHandler)
 {
-	sslConfiguration =  NULL;
+	sslConfiguration = nullptr;
 	loadSslConfig();
 	cleanupTimer.start(cfg.cleanupInterval);
 	connect(&cleanupTimer, SIGNAL(timeout()), SLOT(cleanup()));

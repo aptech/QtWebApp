@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef HTTPSESSION_H
+#define HTTPSESSION_H
 
 #include "qtwebappglobal.h"
 
@@ -118,3 +119,5 @@ private:
 };
 
 } // end of namespace
+
+#endif // HTTPSESSION_H

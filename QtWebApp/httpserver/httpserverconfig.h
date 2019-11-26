@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HTTPSERVERCONFIG_H
+#define HTTPSERVERCONFIG_H
 
 #include "qtwebappglobal.h"
 
@@ -46,6 +47,8 @@ public:
 	int minThreads = 1;
 	/// The maximum amount of connection handlers.
 	int maxThreads = 100;
+
+    int asynchronous = true;
 	
 	/// The file required for SSL support.
 	QString sslKeyFile, sslCertFile;
@@ -137,3 +140,5 @@ private:
 };
 
 }
+
+#endif

@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef DUALFILELOGGER_H
+#define DUALFILELOGGER_H
 
 #include "qtwebappglobal.h"
 #include "filelogger.h"
@@ -15,7 +16,11 @@ namespace qtwebapp {
 
 /**
   Logs messages into two log files simultaneously.
-  May be used to create two logfiles with different configuration settings.
+  I recommend to configure:
+  - One "main" logfile with minLevel=1 or 2 and bufferSize=0. This file is for the operator to see when a problem occured.
+  - A second "debug" logfile with minLevel=1 or 2 and bufferSize=100. This file is for the developer who may need more details (the debug messages) about the
+  situation that leaded to the error.
+
   @see FileLogger for a description of the two underlying loggers.
 */
 
@@ -30,12 +35,15 @@ public:
 	  Must not be 0.
 	  Settings are read from the current group, so the caller must have called settings->beginGroup().
 	  Because the group must not change during runtime, it is recommended to provide a
-	  separate QSettings instance to the logger that is not used by other parts of the program.
+      separate QSettings instance that is not used by other parts of the program.
+      The FileLogger does not take over ownership of the QSettings instance, so the caller
+      should destroy it during shutdown.
 	  @param secondSettings Same as firstSettings, but for the second log file.
 	  @param refreshInterval Interval of checking for changed config settings in msec, or 0=disabled
 	  @param parent Parent object.
 	*/
-	DualFileLogger(QSettings* firstSettings, QSettings* secondSettings, const int refreshInterval=10000, QObject *parent = 0);
+	DualFileLogger(QSettings* firstSettings, QSettings* secondSettings, 
+                   const int refreshInterval=10000, QObject *parent = nullptr);
 	
 	/**
 	  Decorate and log the message, if type>=minLevel.
@@ -47,7 +55,8 @@ public:
 	  @param line Line Number of the source file, where the message was generated (usually filles with the macro __func__ or __FUNCTION__)
 	  @see LogMessage for a description of the message decoration.
 	*/
-	virtual void log(const QtMsgType type, const QString& message, const QString &file="", const QString &function="", const int line=0);
+	virtual void log(const QtMsgType type, const QString& message, const QString &file="",
+                     const QString &function="", const int line=0);
 	
 	/**
 	  Clear the thread-local data of the current thread.
@@ -68,3 +77,5 @@ private:
 };
 
 } // end of namespace
+
+#endif // DUALFILELOGGER_H

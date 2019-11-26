@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef HTTPREQUESTHANDLER_H
+#define HTTPREQUESTHANDLER_H
 
 #include "qtwebappglobal.h"
 #include "httprequest.h"
@@ -32,10 +33,12 @@ public:
      * Constructor.
      * @param parent Parent object.
      */
-    HttpRequestHandler(QObject *parent = 0)
+    HttpRequestHandler(QObject *parent = nullptr)
 		: QObject(parent)
 	{
 	}
+    /** Destructor */
+    virtual ~HttpRequestHandler() {}
 
     /**
       Generate a response for an incoming HTTP request.
@@ -48,3 +51,5 @@ public:
 };
 
 } // end of namespace
+
+#endif // HTTPREQUESTHANDLER_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEMPLATEENGINECONFIG_H
+#define TEMPLATEENGINECONFIG_H
 
 #include "qtwebappglobal.h"
 
@@ -49,3 +50,5 @@ private:
 };
 
 }
+
+#endif

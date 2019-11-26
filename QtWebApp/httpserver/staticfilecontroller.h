@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef STATICFILECONTROLLER_H
+#define STATICFILECONTROLLER_H
 
 #include "qtwebappglobal.h"
 #include "httprequest.h"
@@ -48,7 +49,7 @@ class QTWEBAPP_EXPORT StaticFileController : public HttpRequestHandler  {
 public:
 	
 	/** Constructor */
-	StaticFileController(const StaticFileControllerConfig &cfg, QObject* parent = NULL);
+	StaticFileController(const StaticFileControllerConfig &cfg, QObject* parent = nullptr);
 	
 	/** Generates the response */
 	void service(HttpRequest& request, HttpResponse& response);
@@ -78,15 +79,14 @@ private:
 	
 	/** Cache storage */
 	QCache<QString,CacheEntry> cache;
-	
-	/** ETag storage */
-	QHash<QString,QByteArray> etag;
-	
+
 	/** Used to synchronize cache access for threads */
 	QMutex mutex;
 	
 	/** Set a content-type header in the response depending on the ending of the filename */
-	void setContentType(QString file, HttpResponse& response) const;
+	void setContentType(const QString &file, HttpResponse &response) const;
 };
 
 } // end of namespace
+
+#endif // STATICFILECONTROLLER_H

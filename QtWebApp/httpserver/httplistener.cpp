@@ -14,8 +14,8 @@ HttpListener::HttpListener(const HttpServerConfig &cfg, HttpRequestHandler* requ
     : QTcpServer(parent)
 	, cfg(cfg)
 {
-    Q_ASSERT(requestHandler!=0);
-    pool=NULL;
+    Q_ASSERT(requestHandler!=nullptr);
+    pool=nullptr;
     this->requestHandler=requestHandler;
     // Reqister type of socketDescriptor for signal/slot handling
     qRegisterMetaType<tSocketDescriptor>("tSocketDescriptor");
@@ -39,13 +39,15 @@ void HttpListener::listen()
     {
         pool=new HttpConnectionHandlerPool(cfg, requestHandler);
     }
-    QTcpServer::listen(cfg.host, cfg.port);
+    const QString &host = cfg.host;
+    quint16 port = static_cast<quint16>(cfg.port) & 0xFFFF;
+    QTcpServer::listen(host.isEmpty() ? QHostAddress::Any : QHostAddress(host), port);
     if (!isListening())
     {
-        qCritical("HttpListener: Cannot bind on port %i: %s",cfg.port,qPrintable(errorString()));
+        qCritical("HttpListener: Cannot bind on port %i: %s",port,qPrintable(errorString()));
     }
     else {
-        qDebug("HttpListener: Listening on port %i", serverPort());
+        qDebug("HttpListener: Listening on port %i", port);
     }
 }
 
@@ -57,7 +59,7 @@ void HttpListener::close() {
 #endif
     if (pool) {
         delete pool;
-        pool=NULL;
+        pool=nullptr;
     }
 }
 
@@ -66,7 +68,7 @@ void HttpListener::incomingConnection(tSocketDescriptor socketDescriptor) {
     qDebug("HttpListener: New connection");
 #endif
 
-    HttpConnectionHandler* freeHandler=NULL;
+    HttpConnectionHandler* freeHandler=nullptr;
     if (pool)
     {
         freeHandler=pool->getConnectionHandler();
@@ -81,7 +83,7 @@ void HttpListener::incomingConnection(tSocketDescriptor socketDescriptor) {
     else
     {
         // Reject the connection
-        qWarning("HttpListener: Too many incoming connections");
+        qDebug("HttpListener: Too many incoming connections");
         QTcpSocket* socket=new QTcpSocket(this);
         socket->setSocketDescriptor(socketDescriptor);
         connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));

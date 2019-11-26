@@ -3,27 +3,15 @@
   @author Stefan Frings
 */
 
-#include <logging/filelogger.h>
 #include "requesthandler.h"
-
-using namespace qtwebapp;
+#include "filelogger.h"
 
 /** Logger class */
 extern FileLogger* logger;
 
-
 RequestHandler::RequestHandler(QObject* parent)
     :HttpRequestHandler(parent)
-{
-    qDebug("RequestHandler: created");
-}
-
-
-RequestHandler::~RequestHandler()
-{
-    qDebug("RequestHandler: deleted");
-}
-
+{}
 
 void RequestHandler::service(HttpRequest& request, HttpResponse& response)
 {
@@ -36,7 +24,7 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
     // Return a simple HTML document
     response.write("<html><body>Hello World</body></html>",true);
 
-    qDebug("RequestHandler: finished request");
+    qDebug("Conroller: finished request");
 
     // Clear the log buffer
     if (logger)

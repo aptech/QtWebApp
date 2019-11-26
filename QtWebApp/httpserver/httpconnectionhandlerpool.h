@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HTTPCONNECTIONHANDLERPOOL_H
+#define HTTPCONNECTIONHANDLERPOOL_H
 
 #include "qtwebappglobal.h"
 #include "httpconnectionhandler.h"
@@ -57,7 +58,7 @@ public:
 	  @param requestHandler The handler that will process each received HTTP request.
 	  @warning The requestMapper gets deleted by the destructor of this pool
 	*/
-	HttpConnectionHandlerPool(const HttpServerConfig &cfg, HttpRequestHandler* requestHandler);
+	HttpConnectionHandlerPool(const HttpServerConfig &cfg, HttpRequestHandler *requestHandler);
 	
 	/** Destructor */
 	virtual ~HttpConnectionHandlerPool();
@@ -96,3 +97,5 @@ private slots:
 };
 
 } // end of namespace
+
+#endif // HTTPCONNECTIONHANDLERPOOL_H

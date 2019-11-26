@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef HTTPCOOKIE_H
+#define HTTPCOOKIE_H
 
 #include "qtwebappglobal.h"
 
@@ -119,3 +120,5 @@ private:
 };
 
 } // end of namespace
+
+#endif // HTTPCOOKIE_H

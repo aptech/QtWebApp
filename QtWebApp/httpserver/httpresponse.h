@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef HTTPRESPONSE_H
+#define HTTPRESPONSE_H
 
 #include "qtwebappglobal.h"
 #include "httpcookie.h"
@@ -159,3 +160,5 @@ private:
 };
 
 } // end of namespace
+
+#endif

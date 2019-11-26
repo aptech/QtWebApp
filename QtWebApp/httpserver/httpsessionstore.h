@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef HTTPSESSIONSTORE_H
+#define HTTPSESSIONSTORE_H
 
 #include "qtwebappglobal.h"
 #include "httprequest.h"
@@ -38,7 +39,7 @@ class QTWEBAPP_EXPORT HttpSessionStore : public QObject {
 public:
 	
 	/** Constructor. */
-	HttpSessionStore(const HttpSessionStoreConfig &cfg, QObject* parent=NULL);
+	HttpSessionStore(const HttpSessionStoreConfig &cfg, QObject* parent=nullptr);
 	
 	/** Destructor */
 	virtual ~HttpSessionStore();
@@ -76,7 +77,7 @@ public:
 	HttpSession getSession(const QByteArray id);
 	
 	/** Delete a session */
-	void removeSession(HttpSession session);
+    void removeSession(const HttpSession session);
 	
 protected:
 	/** Storage for the sessions */
@@ -89,7 +90,13 @@ private:
 	
 	/** Timer to remove expired sessions */
 	QTimer cleanupTimer;
-	
+
+    /** Name of the session cookie */
+    QByteArray cookieName;
+
+    /** Time when sessions expire (in ms)*/
+    int expirationTime;
+
 	/** Used to synchronize threads */
 	QMutex mutex;
 	
@@ -100,3 +107,5 @@ private slots:
 };
 
 } // end of namespace
+
+#endif // HTTPSESSIONSTORE_H

@@ -3,7 +3,8 @@
   @author Stefan Frings
 */
 
-#pragma once
+#ifndef HTTPREQUEST_H
+#define HTTPREQUEST_H
 
 #include "qtwebappglobal.h"
 #include "httpserverconfig.h"
@@ -238,3 +239,5 @@ private:
 };
 
 } // end of namespace
+
+#endif // HTTPREQUEST_H

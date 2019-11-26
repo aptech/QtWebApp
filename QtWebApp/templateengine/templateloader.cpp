@@ -12,7 +12,7 @@
 
 using namespace qtwebapp;
 
-TemplateLoader::TemplateLoader(const TemplateEngineConfig &cfg, QObject* parent)
+TemplateLoader::TemplateLoader(const TemplateEngineConfig &cfg, QObject *parent)
 	: QObject(parent)
 {
 	templatePath=cfg.path;

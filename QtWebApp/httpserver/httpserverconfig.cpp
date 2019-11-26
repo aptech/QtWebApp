@@ -34,6 +34,8 @@ void HttpServerConfig::parseSettings(const QSettings &settings)
 	
 	minThreads = parseNum(settings.value("minThreads", minThreads));
 	maxThreads = parseNum(settings.value("maxThreads", maxThreads));
+
+    asynchronous = settings.value("asynchronous", asynchronous).toBool();
 	
 	sslKeyFile = settings.value("sslKeyFile").toString();
 	sslCertFile = settings.value("sslCertFile").toString();

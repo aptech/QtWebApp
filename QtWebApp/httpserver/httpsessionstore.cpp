@@ -15,8 +15,10 @@ HttpSessionStore::HttpSessionStore(const HttpSessionStoreConfig &cfg, QObject* p
 {
     connect(&cleanupTimer,SIGNAL(timeout()),this,SLOT(sessionTimerEvent()));
     cleanupTimer.start(60000);
+    cookieName=cfg.cookieName;
+    expirationTime=cfg.expirationTime;
 #ifdef CMAKE_DEBUG
-    qDebug("HttpSessionStore: Sessions expire after %llu milliseconds",cfg.expirationTime);
+    qDebug("HttpSessionStore: Sessions expire after %llu milliseconds",expirationTime);
 #endif
 }
 
@@ -30,11 +32,11 @@ QByteArray HttpSessionStore::getSessionId(HttpRequest& request, HttpResponse& re
     // The session ID in the response has priority because this one will be used in the next request.
     mutex.lock();
     // Get the session ID from the response cookie
-    QByteArray sessionId=response.getCookies().value(cfg.cookieName).getValue();
+    QByteArray sessionId=response.getCookies().value(cookieName).getValue();
     if (sessionId.isEmpty())
     {
         // Get the session ID from the request cookie
-        sessionId=request.getCookie(cfg.cookieName);
+        sessionId=request.getCookie(cookieName);
     }
     // Clear the session ID if there is no such session in the storage.
     if (!sessionId.isEmpty())
@@ -60,7 +62,7 @@ HttpSession HttpSessionStore::getSession(HttpRequest& request, HttpResponse& res
         {
             mutex.unlock();
             // Refresh the session cookie
-            response.setCookie(HttpCookie(cfg.cookieName,session.getId(),cfg.expirationTime/1000,cfg.cookiePath,cfg.cookieComment,cfg.cookieDomain));
+            response.setCookie(HttpCookie(cfg.cookieName,session.getId(),expirationTime/1000,cfg.cookiePath,cfg.cookieComment,cfg.cookieDomain));
             session.setLastAccess();
             return session;
         }
@@ -73,7 +75,7 @@ HttpSession HttpSessionStore::getSession(HttpRequest& request, HttpResponse& res
         qDebug("HttpSessionStore: create new session with ID %s",session.getId().data());
 #endif
         sessions.insert(session.getId(),session);
-        response.setCookie(HttpCookie(cfg.cookieName,session.getId(),cfg.expirationTime/1000,cfg.cookiePath,cfg.cookieComment,cfg.cookieDomain));
+        response.setCookie(HttpCookie(cfg.cookieName,session.getId(),expirationTime/1000,cfg.cookiePath,cfg.cookieComment,cfg.cookieDomain));
         mutex.unlock();
         return session;
     }
@@ -102,7 +104,7 @@ void HttpSessionStore::sessionTimerEvent()
         ++i;
         HttpSession session=prev.value();
         qint64 lastAccess=session.getLastAccess();
-        if (now-lastAccess>cfg.expirationTime)
+        if (now-lastAccess>expirationTime)
         {
             qDebug("HttpSessionStore: session %s expired",session.getId().data());
             sessions.erase(prev);
