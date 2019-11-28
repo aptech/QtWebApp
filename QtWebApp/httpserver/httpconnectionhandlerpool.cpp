@@ -141,7 +141,7 @@ void HttpConnectionHandlerPool::loadSslConfig()
 		sslConfiguration->setLocalCertificate(certificate);
 		sslConfiguration->setPrivateKey(sslKey);
 		sslConfiguration->setPeerVerifyMode(QSslSocket::VerifyNone);
-		sslConfiguration->setProtocol(QSsl::TlsV1SslV3);
+        sslConfiguration->setProtocol(QSsl::SecureProtocols);
 		
 #ifdef CMAKE_DEBUG
 		qDebug("HttpConnectionHandlerPool: SSL settings loaded");

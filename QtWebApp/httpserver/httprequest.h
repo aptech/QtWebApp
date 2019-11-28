@@ -100,7 +100,7 @@ public:
      * Get all HTTP request headers. Note that the header names
      * are returned in lower-case.
      */
-    QMultiMap<QByteArray,QByteArray> getHeaderMap() const;
+    QMultiHash<QByteArray,QByteArray> getHeaderMap() const;
 
     /**
       Get the value of a HTTP request parameter.
@@ -117,7 +117,7 @@ public:
     QList<QByteArray> getParameters(const QByteArray& name) const;
 
     /** Get all HTTP request parameters. */
-    QMultiMap<QByteArray,QByteArray> getParameterMap() const;
+    QMultiHash<QByteArray,QByteArray> getParameterMap() const;
 
     /** Check if parameter exists. */
     bool hasParameter(const QByteArray& name) const;
@@ -150,7 +150,7 @@ public:
     QByteArray getCookie(const QByteArray& name) const;
 
     /** Get all cookies. */
-    QMap<QByteArray,QByteArray>& getCookieMap();
+    QHash<QByteArray,QByteArray>& getCookieMap();
 
     /**
       Get the address of the connected client.
@@ -162,16 +162,16 @@ public:
 private:
 
     /** Request headers */
-    QMultiMap<QByteArray,QByteArray> headers;
+    QMultiHash<QByteArray,QByteArray> headers;
 
     /** Parameters of the request */
-    QMultiMap<QByteArray,QByteArray> parameters;
+    QMultiHash<QByteArray,QByteArray> parameters;
 
     /** Uploaded files of the request, key is the field name. */
-    QMap<QByteArray,QTemporaryFile*> uploadedFiles;
+    QHash<QByteArray,QTemporaryFile*> uploadedFiles;
 
     /** Received cookies */
-    QMap<QByteArray,QByteArray> cookies;
+    QHash<QByteArray,QByteArray> cookies;
 
     /** Storage for raw body data */
     QByteArray bodyData;

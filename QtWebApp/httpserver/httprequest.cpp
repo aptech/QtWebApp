@@ -360,7 +360,7 @@ QList<QByteArray> HttpRequest::getHeaders(const QByteArray& name) const
 	return headers.values(name.toLower());
 }
 
-QMultiMap<QByteArray,QByteArray> HttpRequest::getHeaderMap() const
+QMultiHash<QByteArray,QByteArray> HttpRequest::getHeaderMap() const
 {
 	return headers;
 }
@@ -380,7 +380,7 @@ bool HttpRequest::hasParameter(const QByteArray& name) const
     return parameters.contains(name);
 }
 
-QMultiMap<QByteArray,QByteArray> HttpRequest::getParameterMap() const
+QMultiHash<QByteArray,QByteArray> HttpRequest::getParameterMap() const
 {
 	return parameters;
 }
@@ -490,7 +490,8 @@ void HttpRequest::parseMultiPartFile()
 					    uploadedFile->resize(uploadedFile->size()-2);
 					    uploadedFile->flush();
 					    uploadedFile->seek(0);
-					    parameters.insert(fieldName,fileName);
+//					    parameters.insert(fieldName,fileName);
+                        parameters.insert(fieldName,uploadedFile->fileName().toLocal8Bit());
 #ifdef CMAKE_DEBUG
     					qDebug("HttpRequest: set parameter %s=%s",fieldName.data(),fileName.data());
 #endif
@@ -523,7 +524,7 @@ void HttpRequest::parseMultiPartFile()
 					// this is a file
 					if (!uploadedFile)
 					{
-						uploadedFile=new QTemporaryFile();
+                        uploadedFile=new QTemporaryFile("XXXXXX" + fileName);
 						uploadedFile->open();
 					}
 					uploadedFile->write(line);
@@ -576,7 +577,7 @@ QByteArray HttpRequest::getCookie(const QByteArray& name) const
 }
 
 /** Get the map of cookies */
-QMap<QByteArray,QByteArray>& HttpRequest::getCookieMap()
+QHash<QByteArray,QByteArray>& HttpRequest::getCookieMap()
 {
 	return cookies;
 }
