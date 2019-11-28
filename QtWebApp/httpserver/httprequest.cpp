@@ -243,7 +243,7 @@ void HttpRequest::decodeRequestParams()
     const QList<QByteArray> &list=rawParameters.split('&');
     foreach (const QByteArray &part, list)
 	{
-		int equalsChar=part.indexOf('=');
+        int equalsChar=part.indexOf('=');
 		if (equalsChar>=0)
 		{
 			QByteArray name=part.left(equalsChar).trimmed();
@@ -569,6 +569,11 @@ HttpRequest::~HttpRequest()
 QTemporaryFile* HttpRequest::getUploadedFile(const QByteArray &fieldName) const
 {
 	return uploadedFiles.value(fieldName);
+}
+
+QMultiHash<QByteArray,QTemporaryFile*> HttpRequest::getUploadedFilesMap() const
+{
+    return uploadedFiles;
 }
 
 QByteArray HttpRequest::getCookie(const QByteArray& name) const

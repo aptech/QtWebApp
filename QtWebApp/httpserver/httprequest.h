@@ -143,6 +143,9 @@ public:
     */
     QTemporaryFile* getUploadedFile(const QByteArray &fieldName) const;
 
+    /** Get all HTTP request files. */
+    QMultiHash<QByteArray,QTemporaryFile*> getUploadedFilesMap() const;
+
     /**
       Get the value of a cookie.
       @param name Name of the cookie
