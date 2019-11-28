@@ -29,6 +29,8 @@ HttpConnectionHandler::HttpConnectionHandler(const HttpServerConfig &cfg, HttpRe
         moveToThread(thread);
         socket->moveToThread(thread);
         readTimer.moveToThread(thread);
+
+        connect(thread, SIGNAL(finished()), this, SLOT(thread_done()));
     }
 
     readTimer.setSingleShot(true);
@@ -37,7 +39,6 @@ HttpConnectionHandler::HttpConnectionHandler(const HttpServerConfig &cfg, HttpRe
 	connect(socket, SIGNAL(readyRead()), SLOT(read()));
 	connect(socket, SIGNAL(disconnected()), SLOT(disconnected()));
 	connect(&readTimer, SIGNAL(timeout()), SLOT(readTimeout()));
-    connect(thread, SIGNAL(finished()), this, SLOT(thread_done()));
 	
 #ifdef CMAKE_DEBUG
     qDebug("HttpConnectionHandler (%p): constructed", static_cast<void*>(this));    
